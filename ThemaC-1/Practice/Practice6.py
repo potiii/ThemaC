@@ -17,7 +17,7 @@ class Pcstats:
             data.setdefault(i, {})
             data[i].setdefault(self.keyA, round((psutil.virtual_memory().used / (1024.0 ** 3)), 2))
             data[i].setdefault(self.keyB, psutil.cpu_percent(interval=1))
-            time.sleep(10)
+            time.sleep(0)
         with open(self.filename, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False)
 
@@ -25,22 +25,10 @@ class Pcstats:
         return pd.read_json(self.filename)
 
     def dict_to_mem_list(self):
-        raw = self.stats_read()
-        mem_list = []
-
-        for i in range(18):
-            mem_list.append(raw[i][self.keyA])
-
-        return mem_list
+        return [self.stats_read()[i][self.keyA] for i in range(len(self.stats_read()))]
 
     def dict_to_cpu_list(self):
-        raw = self.stats_read()
-        cpu_list = []
-
-        for i in range(18):
-            cpu_list.append(raw[i][self.keyB])
-
-        return cpu_list
+        return [self.stats_read()[i][self.keyB] for i in range(len(self.stats_read()))]
 
     def graph_plot(self):
         mem_list = self.dict_to_mem_list()

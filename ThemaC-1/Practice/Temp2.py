@@ -23,29 +23,28 @@ class Pcstats:
             json.dump(data, f, ensure_ascii=False)
 
     def stats_read(self):
-        return pd.read_json(self.filename)
+        with open(self.filename) as f:
+            return json.load(f)
 
     def dict_to_mem_list(self):
-        return [self.stats_read()[i][self.keyA] for i in range(18)]
+        raw = self.stats_read()
+        mem_list = []
 
-        # raw = self.stats_read()
-        # mem_list = []
+        for i in range(18):
+            mem_list.append(raw[i][self.keyA])
 
-        # for i in range(18):
-        #    mem_list.append(raw[i][self.keyA])
-
-        # return mem_list
+        return mem_list
 
     def dict_to_cpu_list(self):
-        return [self.stats_read()[i][self.keyB] for i in range(18)]
+        # return [self.stats_read()[i][self.keyB] for i in range(len(self.stats_read()))]
 
-        # raw = self.stats_read()
-        # cpu_list = []
+        raw = self.stats_read()
+        cpu_list = []
 
-        # for i in range(18):
-        #     cpu_list.append(raw[i][self.keyB])
+        for i in range(18):
+            cpu_list.append(raw[i][self.keyB])
 
-        # return cpu_list
+        return cpu_list
 
     def graph_plot(self):
         mem_list = self.dict_to_mem_list()
@@ -69,8 +68,8 @@ class Pcstats:
 
 def main():
     pcstats = Pcstats()
-    pcstats.stats_write()
-    pcstats.graph_plot()
+    buff = pcstats.stats_read()
+    print(len(buff))
 
 
 if __name__ == '__main__':

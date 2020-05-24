@@ -9,10 +9,7 @@ class Memory:
     filename = 'memory_used.csv'
 
     def mem_write(self):
-        mem_list = []
-        for i in range(18):
-            mem_list.append(round((psutil.virtual_memory().used / (1024.0 ** 3)), 2))
-            time.sleep(1)
+        mem_list = [round((psutil.virtual_memory().used / (1024.0 ** 3)), 2) for i in range(18) if time.sleep(1) is None]
         with open(self.filename, 'w', encoding='utf-8') as fi:
             w = csv.writer(fi)
             w.writerow(mem_list)
@@ -36,11 +33,10 @@ class Memory:
 
 def main():
     memory = Memory()
-    try:
-        memory.mem_write()
-        memory.graph_plot()
-    except Exception as e:
-        print(e)
+
+    memory.mem_write()
+    memory.graph_plot()
+
 
 
 if __name__ == '__main__':
