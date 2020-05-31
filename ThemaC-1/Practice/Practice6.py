@@ -1,6 +1,6 @@
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 import psutil
 import time
 import json
@@ -17,18 +17,19 @@ class Pcstats:
             data.setdefault(i, {})
             data[i].setdefault(self.keyA, round((psutil.virtual_memory().used / (1024.0 ** 3)), 2))
             data[i].setdefault(self.keyB, psutil.cpu_percent(interval=1))
-            time.sleep(0)
+            time.sleep(1)
         with open(self.filename, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False)
 
     def stats_read(self):
-        return pd.read_json(self.filename)
+        with open(self.filename) as f:
+            return json.load(f)
 
     def dict_to_mem_list(self):
-        return [self.stats_read()[i][self.keyA] for i in range(len(self.stats_read()))]
+        return [self.stats_read()[str(i)][self.keyA] for i in range(len(self.stats_read()))]
 
     def dict_to_cpu_list(self):
-        return [self.stats_read()[i][self.keyB] for i in range(len(self.stats_read()))]
+        return [self.stats_read()[str(i)][self.keyB] for i in range(len(self.stats_read()))]
 
     def graph_plot(self):
         mem_list = self.dict_to_mem_list()

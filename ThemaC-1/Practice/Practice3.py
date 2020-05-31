@@ -1,1 +1,1 @@
-print([i for i in range(200, 300) if pow(2, i - 1, i) == 1])
+_ = [print(i) for i in range(200, 300) if pow(2, i - 1, i) == 1]
