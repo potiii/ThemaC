@@ -53,7 +53,7 @@ class Pcstats:
 
 def main():
     pcstats = Pcstats()
-    pcstats.stats_write()
+    #pcstats.stats_write()
     pcstats.graph_plot()
 
 
