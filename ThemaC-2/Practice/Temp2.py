@@ -1,40 +1,11 @@
-import cv2
-from matplotlib import pyplot as plt
 
+price = int(input('金額(円)>'))
+print('金額:', price, '円', sep='')
 
-class Cat:
-    pic_raw = 'cat2.jpg'
-    pic = cv2.imread(pic_raw)
+money_name = {10000: '一万円札=', 5000: '五千円札=', 1000: '千円札　=',
+              500: '五百円玉=', 100: '百円玉　=', 50: '五十円玉=',
+              10: '十円玉　=', 5: '五円玉　=', 1: '一円玉　='}
 
-    def pic_show(self, pic):
-        plt.title('Cat Image')
-        plt.imshow(cv2.cvtColor(pic, cv2.COLOR_BGR2RGB))
-        plt.tick_params(labelbottom=False,
-                        labelleft=False,
-                        labelright=False,
-                        labeltop=False,
-                        bottom=False,
-                        left=False,
-                        right=False,
-                        top=False)
-        plt.show()
-
-    def detect(self, pic):
-        cascade = cv2.CascadeClassifier('haarcascade_frontalcatface_extended.xml')
-        faces = cascade.detectMultiScale(pic)
-
-        for x, y, w, h in faces:
-            cv2.rectangle(pic, (x, y), (x + w, y + h), (255, 0, 0), 2)
-
-        return faces
-
-    def detect_plot(self, pic):
-        detect = self.detect(pic)
-        self.pic_show(detect)
-
-def main():
-    cat = Cat()
-    cat.detect_plot(cat.pic)
-
-if __name__ == '__main__':
-    main()
+for item in money_name:
+    print(money_name[item], price // item, '枚')
+    price = price % item
